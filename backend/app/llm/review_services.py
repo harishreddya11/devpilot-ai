@@ -10,11 +10,7 @@ class ReviewService:
         request: ReviewRequest,
     ) -> ReviewResponse:
 
-        print("✅ ReviewService called")
-
         provider = ProviderFactory.get_provider()
-
-        print(f"Provider: {type(provider).__name__}")
 
         return provider.review_code(
             request.language,

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.schemas.review import ReviewRequest
+from app.schemas.review_response import ReviewResponse
 from app.services.review_service import ReviewService
 
 router = APIRouter(
@@ -11,6 +12,9 @@ router = APIRouter(
 review_service = ReviewService()
 
 
-@router.post("/")
+@router.post(
+    "/",
+    response_model=ReviewResponse
+)
 def review_code(request: ReviewRequest):
     return review_service.review_code(request)
