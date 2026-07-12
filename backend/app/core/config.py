@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "AI Code Review Assistant"
+    app_name: str = "DevPilot AI"
     app_version: str = "1.0.0"
     debug: bool = True
 

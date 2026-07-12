@@ -1,26 +1,36 @@
-# AI Code Review Assistant
+# DevPilot AI
 
-An AI-powered code review application built with:
+An AI-powered Software Engineering Assistant that helps developers:
 
-- FastAPI
-- Python
-- Pydantic
-- LLM Integration
-- Clean Architecture
-
-## Features
-
-- Code Review
-- Bug Detection
-- Performance Suggestions
-- Security Analysis
-- Best Practices
-- Refactored Code
-- Unit Test Generation
+- 🤖 Generate code from natural language
+- 🔍 Review source code
+- 🐞 Detect and fix bugs
+- 📖 Explain code
+- 🧪 Generate unit tests
+- 📝 Generate documentation
+- 🗄️ Generate SQL queries
+- ⚡ Optimize code
 
 ## Tech Stack
 
+### Backend
 - Python
 - FastAPI
 - Pydantic
-- OpenAI-compatible API
+- OpenAI Compatible API
+
+### Frontend
+- React
+- TypeScript
+- Tailwind CSS
+
+### Database
+- PostgreSQL
+
+## Architecture
+
+- Clean Architecture
+- Strategy Pattern
+- Factory Pattern
+- Service Layer
+- Repository Pattern (Upcoming)
