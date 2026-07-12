@@ -1,26 +1,28 @@
 from app.llm.base import LLMProvider
-from app.schemas.review_response import ReviewResponse
+from app.schemas.ai_request import AIRequest
+from app.schemas.ai_response import AIResponse
 
 
 class OpenAIProvider(LLMProvider):
 
-    def review_code(
-        self,
-        language: str,
-        code: str,
-    ) -> ReviewResponse:
+    def execute(self, request: AIRequest) -> AIResponse:
 
-        print("✅ OpenAIProvider.review_code() called")
+        if request.task == "generate":
+            result = f"Generated {request.language} code for: {request.prompt}"
 
-        return ReviewResponse(
-    score=100,
-    summary="THIS IS FROM OpenAIProvider",
-    bugs=["Bug A"],
-    performance=["Performance A"],
-    security=["Security A"],
-    best_practices=["Best Practice A"],
-    complexity="Very Low",
-    refactored_code="HELLO FROM PROVIDER",
-    unit_tests="TESTS",
-    explanation="Provider is working."
-)
+        elif request.task == "review":
+            result = "Reviewed the submitted code."
+
+        elif request.task == "explain":
+            result = "Explained the submitted code."
+
+        elif request.task == "fix":
+            result = "Fixed the submitted code."
+
+        else:
+            result = "Unsupported task."
+
+        return AIResponse(
+            task=request.task,
+            result=result,
+        )

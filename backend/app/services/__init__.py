@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 from app.schemas.review_response import ReviewResponse
 
 

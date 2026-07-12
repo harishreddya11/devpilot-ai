@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.v1.review import router as review_router
+from app.api.v1.assistant import router as assistant_router
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -11,7 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(
-    review_router,
+    assistant_router,
     prefix="/api/v1",
 )
 

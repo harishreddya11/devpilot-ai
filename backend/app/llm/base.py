@@ -1,20 +1,17 @@
 from abc import ABC, abstractmethod
 
-from app.schemas.review_response import ReviewResponse
+from app.schemas.ai_request import AIRequest
+from app.schemas.ai_response import AIResponse
 
 
 class LLMProvider(ABC):
     """
-    Abstract base class for all LLM providers.
+    Base interface for all LLM providers.
     """
 
     @abstractmethod
-    def review_code(
-        self,
-        language: str,
-        code: str,
-    ) -> ReviewResponse:
+    def execute(self, request: AIRequest) -> AIResponse:
         """
-        Review the submitted code.
+        Execute an AI task.
         """
         raise NotImplementedError
