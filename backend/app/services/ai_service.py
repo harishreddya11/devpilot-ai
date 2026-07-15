@@ -13,3 +13,6 @@ class AIService:
 
     def execute(self, request: AIRequest) -> AIResponse:
         return self.provider.execute(request)
+
+    def stream(self, request: AIRequest):
+        return self.provider.stream(request)

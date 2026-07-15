@@ -1,8 +1,7 @@
 from app.core.config import get_settings
 from app.llm.base import LLMProvider
-from app.llm.parser import parse_response
-from app.schemas.task import TaskType
 from app.llm.client import get_client
+from app.llm.parser import parse_response
 from app.llm.prompts import (
     SYSTEM_PROMPT,
     build_generate_prompt,
@@ -27,7 +26,7 @@ class OpenAIProvider(LLMProvider):
             prompt = build_generate_prompt(
                 request.language,
                 request.prompt or "",
-           )
+            )
 
         elif request.task == TaskType.REVIEW:
             prompt = build_review_prompt(
@@ -49,11 +48,65 @@ class OpenAIProvider(LLMProvider):
 
         else:
             raise ValueError("Unsupported task")
-        
-        
+
+        messages = [
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT,
+            },
+            {
+                "role": "user",
+                "content": prompt,
+            },
+        ]
+
         response = client.chat.completions.create(
             model=settings.openrouter_model,
-           messages=[
+            messages=messages,
+        )
+
+        response_text = response.choices[0].message.content or ""
+
+        return parse_response(
+            request,
+            response_text,
+            settings.openrouter_model,
+        )
+
+    def stream(self, request: AIRequest):
+
+        client = get_client()
+
+        if request.task == TaskType.GENERATE:
+            prompt = build_generate_prompt(
+                request.language,
+                request.prompt or "",
+            )
+
+        elif request.task == TaskType.REVIEW:
+            prompt = build_review_prompt(
+                request.language,
+                request.code or "",
+            )
+
+        elif request.task == TaskType.EXPLAIN:
+            prompt = build_explain_prompt(
+                request.language,
+                request.code or "",
+            )
+
+        elif request.task == TaskType.FIX:
+            prompt = build_fix_prompt(
+                request.language,
+                request.code or "",
+            )
+
+        else:
+            raise ValueError("Unsupported task")
+
+        stream = client.chat.completions.create(
+            model=settings.openrouter_model,
+            messages=[
                 {
                     "role": "system",
                     "content": SYSTEM_PROMPT,
@@ -62,14 +115,16 @@ class OpenAIProvider(LLMProvider):
                     "role": "user",
                     "content": prompt,
                 },
-
             ],
+            stream=True,
         )
 
-        response_text = response.choices[0].message.content or ""
+        for chunk in stream:
 
-        return parse_response(
-        request,
-        response_text,
-        settings.openrouter_model,
-)
+            if not chunk.choices:
+                continue
+
+            delta = chunk.choices[0].delta.content
+
+            if delta:
+                yield delta
